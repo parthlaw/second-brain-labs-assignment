@@ -19,4 +19,9 @@ declare global {
     res: AppResponse<RespType>,
     next: NextFunction
   ) => Promise<AppResponse<RespType>>;
+  type Middleware<RespType> = (
+    req: Request,
+    res: AppResponse<RespType>,
+    next: NextFunction
+  ) => Promise<AppResponse<RespType>|void>;
 }
