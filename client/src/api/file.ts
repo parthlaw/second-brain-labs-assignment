@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export const getPresignedUrl=async()=>{
+export async function getPresignedUrl():Promise<any>{
   try{
     const data = await axios.get("http://localhost:8000/api/file/upload")
     return data.data
