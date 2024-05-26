@@ -1,23 +1,43 @@
 datasource db{
   url= env("DATABASE_URL")
   provider = "postgresql"
+  extensions = [pgvector(map: "vector", schema: "public")]
 }
 
 generator client{
   provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
+enum ProjectStatus{
+  creating
+  failed
+  created
+}
 model User {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   name      String?
-  createdAt DateTime @default(now())
-  email     String   @unique
+  createdAt DateTime  @default(now())
+  email     String    @unique
   password  String
+  Projects  Projects[]
 }
 
-model FileUploads {
-  id        Int      @id @default(autoincrement())
-  name      String?
-  path      String
-  generated_vector    String
+model Projects {
+  id        Int       @id @default(autoincrement())
+  name      String
+  file_url  String
+  userId    Int
+  User      User      @relation(fields: [userId], references: [id])
+  status    ProjectStatus   @default(creating)
+  Embeddings Embeddings[]
+}
+
+model Embeddings {
+  id        Int       @id @default(autoincrement())
+  tokens    Int
+  text      String
+  embedding Unsupported("vector")
+  projectId Int
+  Project   Projects  @relation(fields: [projectId], references: [id])
 }

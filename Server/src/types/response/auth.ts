@@ -1,8 +1,8 @@
-import { UserResponse } from "./user";
+import { UserResponse } from './user'
 
-export interface LoginResponse extends UserResponse{
-  accessToken:{
-    token:string;
-    exp:string
-  };
+export interface LoginResponse extends UserResponse {
+  accessToken: {
+    token: string
+    exp: string
+  }
 }

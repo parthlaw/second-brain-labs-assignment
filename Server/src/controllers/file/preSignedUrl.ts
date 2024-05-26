@@ -1,18 +1,24 @@
-import { getUploadFileURL } from "../../utils/aws/s3"
+import { getUploadFileURL } from '../../utils/aws/s3'
 
-const getPreSignedUrl:Controller<any>=async(req,res,next)=>{
-  try{
+const getPreSignedUrl: Controller<any> = async (req, res, next) => {
+  try {
     const name = req.query.name as string
-    const url = await getUploadFileURL("pdfs",name)
+    if (!name) {
+      return res.status(400).json({
+        error: true,
+        message: 'Name is required',
+      })
+    }
+    const url = await getUploadFileURL(process.env.BUCKET_NAME, name)
     console.log(url)
     return res.status(201).json({
-      success:true,
-      message: "URL generated",
-      data:{
-        url: url
-      }
+      success: true,
+      message: 'URL generated',
+      data: {
+        url: url,
+      },
     })
-  }catch(err){
+  } catch (err) {
     next(err)
   }
 }

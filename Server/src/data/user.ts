@@ -1,20 +1,22 @@
-import { UserInput } from "../types"
-import prisma from "./prisma"
+import { UserInput } from '../types'
+import prisma from './prisma'
 
-export const getUserByEmail=async(email:string)=>{
-  try{
-    const user  = await prisma.user.findFirst({where:{email:email}})
+export const getUserByEmail = async (email: string) => {
+  try {
+    const user = await prisma.user.findFirst({ where: { email: email } })
     return user
-  }catch(e){
+  } catch (e) {
     console.log(e)
   }
 }
 
-export const createUser=async(user:UserInput)=>{
-  try{
-    const newUser = await prisma.user.create({data:{email:user.email,name:user.name,password:user.password}})
+export const createUser = async (user: UserInput) => {
+  try {
+    const newUser = await prisma.user.create({
+      data: { email: user.email, name: user.name, password: user.password },
+    })
     return newUser
-  }catch(e){
+  } catch (e) {
     console.log(e)
   }
 }

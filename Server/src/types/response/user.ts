@@ -1,5 +1,5 @@
-import { UserOutput } from "../schemas";
+import { UserOutput } from '../schemas'
 
-export interface UserResponse{
+export interface UserResponse {
   user: UserOutput
 }
