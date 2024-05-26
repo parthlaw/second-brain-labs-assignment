@@ -2,7 +2,7 @@ import { CohereClient } from "cohere-ai";
 import fs from "fs"
 import PdfParse from "pdf-parse";
 const cohere = new CohereClient({
-    token: "yvmp79ccZ6I4vKQnhHeNzPKqZpOBDT7PVBrJvDGZ",
+    token: process.env.COHERE_TOKEN
 });
 export const extractTextFromPDF=async(pdfPath:string)=>{
   const dataBuffer = fs.readFileSync(pdfPath)
