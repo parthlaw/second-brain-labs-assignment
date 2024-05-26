@@ -1,10 +1,18 @@
-import axios from "axios"
+import axios from 'axios'
+import { BASE_API_URL } from './constants'
 
-export async function getPresignedUrl():Promise<any>{
-  try{
-    const data = await axios.get("http://localhost:8000/api/file/upload")
+export async function getPresignedUrl(apiData: any): Promise<any> {
+  try {
+    const data = await axios.get(
+      `${BASE_API_URL}/file/getPreSignedUrl?name=${apiData.name}`,
+      {
+        headers: {
+          Authorization: apiData.token,
+        },
+      }
+    )
     return data.data
-  }catch(e){
+  } catch (e) {
     console.log(e)
     return null
   }

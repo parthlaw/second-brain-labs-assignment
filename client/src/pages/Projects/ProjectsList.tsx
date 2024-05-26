@@ -1,44 +1,54 @@
-import NewProjectModal from "./NewProjectModal"
+import { useQuery } from '@tanstack/react-query'
+import { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
+import { listProjects } from '../../api/projects'
+import NewProjectModal from './NewProjectModal'
 
-const ProjectsList = () =>{
-  return(
-  <div className="overflow-x-auto">
-  <NewProjectModal/>
-  <table className="table">
-    {/* head */}
-    <thead>
-      <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Job</th>
-        <th>Favorite Color</th>
-      </tr>
-    </thead>
-    <tbody>
-      {/* row 1 */}
-      <tr>
-        <th>1</th>
-        <td>Cy Ganderton</td>
-        <td>Quality Control Specialist</td>
-        <td>Blue</td>
-      </tr>
-      {/* row 2 */}
-      <tr>
-        <th>2</th>
-        <td>Hart Hagerty</td>
-        <td>Desktop Support Technician</td>
-        <td>Purple</td>
-      </tr>
-      {/* row 3 */}
-      <tr>
-        <th>3</th>
-        <td>Brice Swyre</td>
-        <td>Tax Accountant</td>
-        <td>Red</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+const ProjectsList = () => {
+  const [openModal, setOpenModal] = useState(false)
+  const [cookies, setCookie] = useCookies(['access-token'])
+  console.log(cookies['access-token'], 'TOKEN')
+  const { data, isLoading } = useQuery({
+    queryKey: ['projects', { token: '' }],
+    queryFn: () => {
+      return listProjects({ token: cookies['access-token'].token })
+    },
+  })
+  useEffect(() => {
+    console.log('GET DATA', data)
+  }, [data])
+  return (
+    <div className="overflow-x-auto">
+      <button
+        type="button"
+        className="btn btn-primary"
+        onClick={() => setOpenModal(true)}
+      >
+        Add New
+      </button>
+      <NewProjectModal open={openModal} onClose={() => setOpenModal(false)} />
+      <table className="table">
+        {/* head */}
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>File Url</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data?.data?.projects?.map((project: any, i: number) => (
+            <tr key={`projects${i}`}>
+              <th>{i}</th>
+              <td>{project.name}</td>
+              <td>{project.file_url}</td>
+              <td>{project.status}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   )
 }
 export default ProjectsList

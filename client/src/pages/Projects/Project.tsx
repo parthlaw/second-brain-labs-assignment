@@ -1,20 +1,20 @@
 // src/components/ChatScreen.jsx
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 const ProjectScreen = () => {
   const [messages, setMessages] = useState([
     { sender: 'other', text: 'Hello! How can I help you today?' },
     { sender: 'me', text: 'I have a question about your services.' },
-  ]);
+  ])
 
-  const [newMessage, setNewMessage] = useState('');
+  const [newMessage, setNewMessage] = useState('')
 
   const handleSendMessage = () => {
     if (newMessage.trim() !== '') {
-      setMessages([...messages, { sender: 'me', text: newMessage }]);
-      setNewMessage('');
+      setMessages([...messages, { sender: 'me', text: newMessage }])
+      setNewMessage('')
     }
-  };
+  }
 
   return (
     <div className="flex flex-col h-full bg-base-200">
@@ -24,7 +24,9 @@ const ProjectScreen = () => {
             key={index}
             className={`chat ${message.sender === 'me' ? 'chat-end' : 'chat-start'}`}
           >
-            <div className={`chat-bubble ${message.sender === 'me' ? 'chat-bubble-primary' : 'chat-bubble-secondary'}`}>
+            <div
+              className={`chat-bubble ${message.sender === 'me' ? 'chat-bubble-primary' : 'chat-bubble-secondary'}`}
+            >
               {message.text}
             </div>
           </div>
@@ -45,7 +47,7 @@ const ProjectScreen = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProjectScreen;
+export default ProjectScreen
