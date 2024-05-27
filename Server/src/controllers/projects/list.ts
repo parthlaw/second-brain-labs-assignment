@@ -1,8 +1,10 @@
 import { listProjects } from '../../data'
+import { ProjectListResponse } from '../../types'
 
-const list: Controller<any> = async (req, res, next) => {
+const list: Controller<ProjectListResponse> = async (req, res, next) => {
   try {
-    const projects = await listProjects()
+    const userId = req["decode"].userId
+    const projects = await listProjects(userId)
     return res.status(200).json({
       success: true,
       message: 'Projects fetched',

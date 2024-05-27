@@ -10,24 +10,7 @@ export const extractTextFromPDF=async(pdfPath:string)=>{
   console.log(data.text)
   return data.text
 }
-// async function createEmbeddingsFromPDF(filePath) {
-//   try {
-//     const text = await extractTextFromPDF(filePath);
-//     // Split text into lines and filter out empty lines
-//     const lines = text.split('\n').filter(line => line.trim().length > 0);
-//     
-//     const embed = await cohere.embed({
-//       texts: lines,
-//       model: 'embed-english-v3.0',
-//       inputType: 'classification',
-//     });
-//     
-//     console.log(embed);
-//     return embed.embeddings
-//   } catch (error) {
-//     console.error('Error:', error);
-//   }
-// }
+
 export const createEmbeddings=async(texts:string[])=>{
   try{
     const embed = await cohere.embed({
@@ -35,9 +18,14 @@ export const createEmbeddings=async(texts:string[])=>{
       model: "embed-english-v3.0",
       inputType: "classification"
     })
-    console.log(embed)
+    console.log(embed.embeddings)
     return embed?.embeddings
   }catch(err){
     throw err;
   }
+}
+
+export const countTokens=(text:string)=> {
+  const tokens = text.match(/\b\w+\b/g);
+  return tokens ? tokens.length : 0;
 }

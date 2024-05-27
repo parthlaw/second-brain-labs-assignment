@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "prisma generate && tsc",
     "dev": "nodemon",
     "worker": "ts-node -r dotenv/config --files workers/index.ts",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,md}\""

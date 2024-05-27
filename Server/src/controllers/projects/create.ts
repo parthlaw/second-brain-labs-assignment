@@ -1,8 +1,10 @@
+import { ProjectStatus } from '@prisma/client'
 import { addPdfJob } from '../../asyncTasks/bullMQ/queues'
 import { createProject } from '../../data'
+import { ProjectResponse } from '../../types'
 import { createS3UrlFromKey } from '../../utils/aws/s3'
 
-const create: Controller<any> = async (req, res, next) => {
+const create: Controller<ProjectResponse> = async (req, res, next) => {
   try {
     const body = req.body
     const userId = 1
@@ -11,12 +13,13 @@ const create: Controller<any> = async (req, res, next) => {
       body.name,
       file_url,
       userId,
-      'creating'
+      ProjectStatus.creating
     )
     await addPdfJob({
       type: 'pdfProcessing',
       data: {
         key: body.key,
+        projectId: createdProject.id
       },
     })
     return res.status(201).json({

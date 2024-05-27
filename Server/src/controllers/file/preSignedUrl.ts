@@ -1,6 +1,7 @@
+import { PreSignedUrlResponse } from '../../types'
 import { getUploadFileURL } from '../../utils/aws/s3'
 
-const getPreSignedUrl: Controller<any> = async (req, res, next) => {
+const getPreSignedUrl: Controller<PreSignedUrlResponse> = async (req, res, next) => {
   try {
     const name = req.query.name as string
     if (!name) {

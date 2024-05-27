@@ -1,0 +1,13 @@
+# Server Dockerfile
+FROM node:18
+
+WORKDIR /app
+ENV DATABASE_URL=postgresql://postgres:mysecretpassword@postgres:5432/postgres
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+EXPOSE 8000
+
+CMD npx prisma migrate dev && node dist/src/index.js
