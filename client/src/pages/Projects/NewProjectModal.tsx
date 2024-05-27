@@ -58,7 +58,7 @@ const NewProjectModal = (props: any) => {
   }
   const handleSave = () => {
     saveMutate({
-      data: { name: 'abcd', key: file?.name },
+      data: { name: name || "", key: file?.name||"" },
       token: cookies['access-token'].token,
     })
   }

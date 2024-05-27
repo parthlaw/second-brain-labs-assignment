@@ -1,19 +1,56 @@
-// src/components/ChatScreen.jsx
-import React, { useState } from 'react'
-
+import { useMutation, useQuery } from '@tanstack/react-query'
+import React, { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
+import { useNavigate, useParams } from 'react-router-dom'
+import { getOneProject, receiveChatResponse } from '../../api/projects'
+import useProjectStore from '../../stores/projectStore'
 const ProjectScreen = () => {
   const [messages, setMessages] = useState([
     { sender: 'other', text: 'Hello! How can I help you today?' },
-    { sender: 'me', text: 'I have a question about your services.' },
   ])
-
+  const {id} = useParams()
+  const [cookies] = useCookies(['access-token'])
   const [newMessage, setNewMessage] = useState('')
-
+  const { setProject } = useProjectStore() as any
+  const navigate = useNavigate()
+  const {data, isLoading} = useQuery({
+    queryFn: ()=>{return getOneProject({token:cookies['access-token'].token as string, data:{projectId:parseInt(id as string)}})},
+    queryKey: ['project']
+  })
+  useEffect(()=>{
+    if(!id || !parseInt(id)){
+      navigate("/projects")
+    }
+  },[id])
+  useEffect(()=>{
+    if(!isLoading && data?.success){
+      setProject(data.data.project)
+    }
+    return ()=>{setProject({})}
+  },[data,isLoading])
+  const {mutate} = useMutation({
+    mutationFn: receiveChatResponse,
+    onSuccess: (data:any)=>{
+      if(!data || !data.success){
+        setMessages([...messages, { sender: 'other', text: 'Error Occured in getting the response' }])
+        return
+      }
+      setMessages([...messages, { sender: 'other', text: data.data.reply }])
+    },
+    onError:(err)=>{
+      console.log(err)
+      setMessages([...messages, { sender: 'other', text: 'Error Occured in getting the response' }])
+    }
+  })
   const handleSendMessage = () => {
     if (newMessage.trim() !== '') {
       setMessages([...messages, { sender: 'me', text: newMessage }])
       setNewMessage('')
     }
+    if(!id || !parseInt(id)){
+      return
+    }
+    mutate({token: cookies['access-token'].token, data:{projectId:parseInt(id),message:newMessage}})
   }
 
   return (
