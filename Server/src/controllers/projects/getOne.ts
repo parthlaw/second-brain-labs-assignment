@@ -1,18 +1,18 @@
-import { getProjectById } from "../../data"
+import { getProjectById } from '../../data'
 import { ProjectResponse } from '../../types'
-const getOne:Controller<ProjectResponse> = async(req, res, next)=>{
-  try{
+const getOne: Controller<ProjectResponse> = async (req, res, next) => {
+  try {
     const id = req.params.id
-    const userId = req["decode"].userId
-    const project = await getProjectById(parseInt(id),userId)
+    const userId = req['decode'].userId
+    const project = await getProjectById(parseInt(id), userId)
     return res.status(200).json({
-      success:true,
-      message: "Project fetched",
+      success: true,
+      message: 'Project fetched',
       data: {
-        project
-      }
+        project,
+      },
     })
-  }catch(err){
+  } catch (err) {
     next(err)
   }
 }

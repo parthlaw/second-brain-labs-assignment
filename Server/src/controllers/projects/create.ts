@@ -19,7 +19,7 @@ const create: Controller<ProjectResponse> = async (req, res, next) => {
       type: 'pdfProcessing',
       data: {
         key: body.key,
-        projectId: createdProject.id
+        projectId: createdProject.id,
       },
     })
     return res.status(201).json({

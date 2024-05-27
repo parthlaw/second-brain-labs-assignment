@@ -1,4 +1,4 @@
-import { Projects } from "@prisma/client";
+import { Projects } from '@prisma/client'
 export interface ProjectResponse {
   project: Projects
 }

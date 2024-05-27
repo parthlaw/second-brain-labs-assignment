@@ -3,7 +3,7 @@ import { ProjectListResponse } from '../../types'
 
 const list: Controller<ProjectListResponse> = async (req, res, next) => {
   try {
-    const userId = req["decode"].userId
+    const userId = req['decode'].userId
     const projects = await listProjects(userId)
     return res.status(200).json({
       success: true,
