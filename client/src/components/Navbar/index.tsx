@@ -1,11 +1,13 @@
-import useProjectStore from "../../stores/projectStore"
+import useProjectStore from '../../stores/projectStore'
 
 const NavBar = () => {
   const { project } = useProjectStore() as any
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">Chat With Pdf {project?.name?"-":""} {project?.name}</a>
+        <a className="btn btn-ghost text-xl">
+          Chat With Pdf {project?.name ? '-' : ''} {project?.name}
+        </a>
       </div>
       <div className="flex-none">
         <button className="btn btn-square btn-ghost">
