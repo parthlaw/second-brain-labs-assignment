@@ -9,5 +9,5 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
-
+RUN mkdir workers/temp
 CMD npx prisma migrate dev && node dist/workers/index.js

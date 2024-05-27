@@ -1,4 +1,3 @@
-import prisma from './data/prisma'
 import { downloadFromS3 } from './utils/s3'
 import {
   countTokens,
@@ -25,7 +24,6 @@ const processPdf = async (job) => {
     let i = 0
     for await (const embedding of embeddings) {
       const tokens = countTokens(lines[i])
-      // const result = await prisma.$executeRaw`INSERT INTO "Embeddings" (tokens, embedding, text, "projectId") VALUES (${tokens},${embedding},${lines[i]},${job.projectId})`
       const result = await addEmbedding(
         tokens,
         embedding,
